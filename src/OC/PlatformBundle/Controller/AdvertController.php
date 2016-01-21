@@ -265,6 +265,11 @@ class AdvertController extends Controller
   public function editAction($id, Request $request)
 
   {
+
+    // ...
+
+    
+
     $advert = array(
 
       'title'   => 'Recherche développpeur Symfony2',
@@ -278,6 +283,8 @@ class AdvertController extends Controller
       'date'    => new \Datetime()
 
     );
+
+
     return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
 
       'advert' => $advert
