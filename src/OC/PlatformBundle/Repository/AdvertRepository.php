@@ -3,7 +3,7 @@
 namespace OC\PlatformBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 /**
  * AdvertRepository
@@ -13,7 +13,30 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getAdvertWithCategories(array $categoryNames)
+	 
+  //recuperer les adverts avec les jointures triées par date
+  public function getAdverts($page, $nbPerPage)
+  {
+    $query = $this->createQueryBuilder('a')
+      ->leftJoin('a.image', 'i')
+      ->addSelect('i')
+      ->leftJoin('a.categories', 'c')
+      ->addSelect('c')
+      ->orderBy('a.date', 'DESC')
+      ->getQuery();
+    return $query->getResult();
+	
+	 $query
+      // On définit l'annonce à partir de laquelle commencer la liste
+      ->setFirstResult(($page-1) * $nbPerPage)
+      // Ainsi que le nombre d'annonce à afficher sur une page
+      ->setMaxResults($nbPerPage);
+    // Enfin, on retourne l'objet Paginator correspondant à la requête construite
+    return new Paginator($query, true);
+  }
+
+  
+  public function getAdvertWithCategories(array $categoryNames)
   {
     $qb = $this->createQueryBuilder('a');
 

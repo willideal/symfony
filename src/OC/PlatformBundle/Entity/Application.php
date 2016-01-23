@@ -13,20 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Entity\ApplicationRepository")
 
+ * @ORM\HasLifecycleCallbacks()
+
  */
 
 class Application
 
 {
-	/**
-
-   * @ORM\ManyToOne(targetEntity="OC\PlatformBundle\Entity\Advert")
-
-   * @ORM\JoinColumn(nullable=false)
-
-   */
-
-  private $advert;
 
   /**
 
@@ -37,6 +30,7 @@ class Application
    * @ORM\GeneratedValue(strategy="AUTO")
 
    */
+
 
   private $id;
 
@@ -67,7 +61,16 @@ class Application
 
   private $date;
 
-  
+  /**
+
+   * @ORM\ManyToOne(targetEntity="OC\PlatformBundle\Entity\Advert")
+
+   * @ORM\JoinColumn(nullable=false)
+
+   */
+
+  private $advert;
+
 
   public function __construct()
 
@@ -146,6 +149,34 @@ class Application
   {
 
     return $this->date;
+
+  }
+  	/**
+
+   * @ORM\PrePersist
+
+   */
+
+  public function increase()
+
+  {
+
+    $this->getAdvert()->increaseApplication();
+
+  }
+
+
+  /**
+
+   * @ORM\PreRemove
+
+   */
+
+  public function decrease()
+
+  {
+
+    $this->getAdvert()->decreaseApplication();
 
   }
 
