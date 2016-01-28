@@ -3,10 +3,12 @@
 
 namespace OC\PlatformBundle\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Image;
+use OC\PlatformBundle\Form\AdvertType;
 use OC\PlatformBundle\Entity\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,7 +18,6 @@ class AdvertController extends Controller
 
 {
 	 public function indexAction($page)
-
   {
 	if ($page < 1) {
 
@@ -73,27 +74,29 @@ class AdvertController extends Controller
   }
   
   public function addAction(Request $request)
-
   {
-	// La gestion d'un formulaire est particulière, mais l'idée est la suivante :
+	// On crée un objet Advert
+    $advert = new Advert();
+	$form = $this->createForm(AdvertType::class, $advert);
+    if ($form->handleRequest($request)->isValid()) {
+      // On l'enregistre notre objet $advert dans la base de données, par exemple
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($advert);
+      $em->flush();
 
+      $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
-    if ($request->isMethod('POST')) {
-
-      // Ici, on s'occupera de la création et de la gestion du formulaire
-
-
-      $request->getSession()->getFlashBag()->add('info', 'Annonce bien enregistrée.');
-
-
-      // Puis on redirige vers la page de visualisation de cet article
-
-      return $this->redirect($this->generateUrl('oc_platform_view', array('id' => 1)));
+      // On redirige vers la page de visualisation de l'annonce nouvellement créée
+      return $this->redirect($this->generateUrl('oc_platform_view', array('id' => $advert->getId())));
 
     }
-    // Si on n'est pas en POST, alors on affiche le formulaire
-    return $this->render('OCPlatformBundle:Advert:add.html.twig');
+    // On passe la méthode createView() du formulaire à la vue
+    // afin qu'elle puisse afficher le formulaire toute seule
+    return $this->render('OCPlatformBundle:Advert:add.html.twig', array(
+      'form' => $form->createView(),
+    ));
   }
+  
   
   
   public function deleteAction($id, Request $request)
