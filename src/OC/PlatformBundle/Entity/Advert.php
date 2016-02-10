@@ -6,7 +6,8 @@ namespace OC\PlatformBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Advert
@@ -14,6 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="advert")
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Repository\AdvertRepository")
  * @ORM\HasLifecycleCallbacks()
+
  */
 class Advert
 {
@@ -33,7 +35,7 @@ class Advert
   /**
 
    * @ORM\Column(name="date", type="datetime")
-
+   * @Assert\DateTime()
    */
 
   private $date;
@@ -41,8 +43,8 @@ class Advert
 
   /**
 
-   * @ORM\Column(name="title", type="string", length=255, unique=false)
-
+   * @ORM\Column(name="title", type="string", length=255, unique=true)
+   * @Assert\Length(min=10)
    */
 
   private $title;
@@ -51,7 +53,7 @@ class Advert
   /**
 
    * @ORM\Column(name="author", type="string", length=255)
-
+   * @Assert\Length(min=2)
    */
 
   private $author;
@@ -60,7 +62,7 @@ class Advert
   /**
 
    * @ORM\Column(name="content", type="text")
-
+   * @Assert\NotBlank()
    */
 
   private $content;
@@ -78,7 +80,7 @@ class Advert
   /**
 
    * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
-
+   * @Assert\Valid()
    */
 
   private $image;
@@ -486,4 +488,6 @@ class Advert
     {
         return $this->applications;
     }
+	
+	
 }

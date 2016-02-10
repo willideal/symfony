@@ -102,15 +102,34 @@
       <div class="col-sm-4">
 
         {{ form_widget(form.published, {'attr': {'class': 'form-control'}}) }}
-	
+		
       </div>
+	</div>
+	  <div class="form-group">
 
+      {{ form_label(form.image.file, "File", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+      {{ form_errors(form.image.file) }}
+
+      <div class="col-sm-4">
+
+       {{ form_widget(form.image.file) }} 
+		
+      </div>
+	</div>
+	  
+	  
+		   <div class="form-group">
+		  <ul class="categories">
+			{# iterate over each existing tag and render its only field: name #}
+			{% for category in form.categories %}
+				<li>{{ form_widget(category.name) }}</li>
+			{% endfor %}
+		</ul>
+		
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
     </div>
 
- 
-
-
-  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
 
 
   {# Génération automatique des champs pas encore écrits.

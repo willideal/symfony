@@ -1,0 +1,25 @@
+Accueil
+Danse en couple
+Danse en ligne
+cours collectifs
+cours particulier
+stage
+événementiel
+
+from socket import *
+HOST = 'localhost'
+PORT = 28812
+BUFSIZE = 1024
+ADDR = (HOST, PORT)
+tcpTimeClientSock = socket(AF_INET, SOCK_STREAM)
+tcpTimeClientSock.connect(ADDR)
+while True:
+  data = raw_input('> ')
+  if not data:
+      break
+  tcpTimeClientSock.send(data)
+  data = tcpTimeClientSock.recv(BUFSIZE)
+  if not data:
+      break
+print data
+tcpTimeClientSock.close()
