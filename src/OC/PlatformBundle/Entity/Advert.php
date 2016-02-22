@@ -43,7 +43,7 @@ class Advert
 
   /**
 
-   * @ORM\Column(name="title", type="string", length=255, unique=true)
+   * @ORM\Column(name="title", type="string", length=255, unique=false)
    * @Assert\Length(min=10)
    */
 

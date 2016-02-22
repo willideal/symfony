@@ -16,7 +16,10 @@ use OC\PlatformBundle\Form\CategoryType;
 use OC\PlatformBundle\Entity\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 //use Symfony\Component\HttpFoundation\RedirectResponse; 
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
 class AdvertController extends Controller
@@ -80,6 +83,13 @@ class AdvertController extends Controller
   
   public function addAction(Request $request)
   {
+   /*if (!$this->get('security.authorization_checker')->isGranted('ROLE_AUTEUR')) {
+
+      // Sinon on déclenche une exception « Accès interdit »
+
+      throw new AccessDeniedException('Accès limité aux auteurs.');
+
+    }*/
 	// On crée un objet Advert
     $advert = new Advert();
 	$form = $this->createForm(AdvertType::class, $advert);
@@ -220,4 +230,27 @@ class AdvertController extends Controller
       'listAdverts' => $listAdverts
     ));
   }
+  
+    /**
+     * @Route("/login", name="login")
+     */
+    public function loginAction(Request $request)
+    {
+		$authenticationUtils = $this->get('security.authentication_utils');
+
+    // get the login error if there is one
+    $error = $authenticationUtils->getLastAuthenticationError();
+
+    // last username entered by the user
+    $lastUsername = $authenticationUtils->getLastUsername();
+
+    return $this->render(
+        'OCPlatformBundle:Advert:login.html.twig',
+        array(
+            // last username entered by the user
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        )
+    );
+    }
 }

@@ -4,4 +4,11 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     oc_platform.antispam:
         class: OC\PlatformBundle\Antispam\OCAntispam
-        arguments: [%@mailer, %locale%, 50%]
+        arguments: ["@mailer", "%locale%", "50%"]
+    oc_platform.beta.html:
+        class: OC\PlatformBundle\Beta\BetaHTML
+    oc_platform.beta.listener:
+        class: OC\PlatformBundle\Beta\BetaListener
+        arguments: ["@oc_platform.beta.html", "2016-03-20"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: processBeta }
