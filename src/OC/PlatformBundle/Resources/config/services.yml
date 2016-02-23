@@ -12,3 +12,11 @@ services:
         arguments: ["@oc_platform.beta.html", "2016-03-20"]
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: processBeta }
+    oc_platform.censorship_processor:
+        class:     OC\PlatformBundle\Bigbrother\CensorshipProcessor
+        arguments: ["@mailer"]
+    oc_platform.censorship_listener:
+        class:     OC\PlatformBundle\Bigbrother\CensorshipListener
+        arguments: ["@oc_platform.censorship_processor", "[1, 2, 3]"]
+        tags:
+            - { name: kernel.event_listener, event: oc_platform.bigbrother.post_message, method: processMessage }
