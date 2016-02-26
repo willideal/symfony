@@ -7,7 +7,7 @@ oc_platform_view:
     path:     /advert/{id}
     defaults: { _controller: OCPlatformBundle:Advert:view }
     requirements:
-        page:   \d+
+        id:   \d+
 oc_platform_add:
     path:     /add
     defaults: { _controller: OCPlatformBundle:Advert:add }

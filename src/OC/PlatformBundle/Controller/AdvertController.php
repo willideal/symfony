@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 //use Symfony\Component\HttpFoundation\RedirectResponse; 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -61,7 +62,7 @@ class AdvertController extends Controller
 
   }
 
-  public function viewAction($id)
+  public function viewAction(Advert $advert, $id)
   {	
 	$em = $this->getDoctrine()->getManager();
     // On récupère l'annonce $id
@@ -263,6 +264,19 @@ class AdvertController extends Controller
       'name' => $name
 
     ));
+
+  }
+  /**
+
+   * @ParamConverter("json")
+
+   */
+
+  public function ParamConverterAction($json)
+
+  {
+
+    return new Response(print_r($json, true));
 
   }
 }
