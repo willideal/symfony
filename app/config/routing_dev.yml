@@ -25,3 +25,10 @@ oc_platform_paramconverter:
     path: /test/{json}
 
     defaults: { _controller: "OCPlatformBundle:Advert:ParamConverter" }
+
+console:
+    resource: .
+    type: extra
+
+console:
+    resource: "@CoreSphereConsoleBundle/Resources/config/routing.yml"
